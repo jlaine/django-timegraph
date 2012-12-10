@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# django-timegraph
+# django-timegraph - monitoring graphs for django
 # Copyright (c) 2011-2012, Wifirst
 # All rights reserved.
 #

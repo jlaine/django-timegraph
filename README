@@ -1,0 +1,17 @@
+django-timegraph - support for django models over LDAP
+Copyright (C) 2011-2012 Wifirst
+See AUTHORS file for a full list of contributors.
+
+License
+=======
+
+django-timegraph is distributed under the BSD license, see the LICENSE
+file for details.
+
+Usage
+=====
+
+For usage notes, please refer to the project homepage:
+
+http://opensource.wifirst.net/projects/django-timegraph/
+

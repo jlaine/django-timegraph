@@ -42,6 +42,9 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 class Graph(models.Model):
+    """
+    A model representing a graph of a set of monitored metrics.
+    """
     slug = models.SlugField()
     metrics = models.ManyToManyField('Metric')
     title = models.CharField(max_length=255)
@@ -109,7 +112,7 @@ class Metric(models.Model):
     @property
     def is_summable(self):
         """
-        Returns True if the metric is summable.
+        True if the metric is summable, False otherwise.
         """
         return (self.type in ['float', 'int']) and (self.unit not in [u'%', u'°', u'°C', u'°F'])
 
@@ -126,12 +129,16 @@ class Metric(models.Model):
         return value
 
     def rrd_path(self, obj):
+        """
+        RRD path for the given object.
+        """
         obj_type = obj.__class__.__name__.lower()
         obj_pk = str(obj.pk).replace(':', '')
         return os.path.join(settings.TIMEGRAPH_RRD_ROOT, obj_type, obj_pk, '%s.rrd' % self.pk)
 
     def __cache_key(self, obj):
         """
+        Cache key for the given object.
         """
         obj_type = obj.__class__.__name__.lower()
         obj_pk = str(obj.pk).replace(':', '')

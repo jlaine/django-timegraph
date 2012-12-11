@@ -41,6 +41,9 @@ from django.core.cache import cache
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+TIMEGRAPH_CACHE_ROOT = getattr(settings, 'TIMEGRAPH_CACHE_ROOT', 'polling')
+TIMEGRAPH_RRD_ROOT = getattr(settings, 'TIMEGRAPH_RRD_ROOT', '/var/lib/rrdcached/db')
+
 class Graph(models.Model):
     """
     A model representing a graph of a set of monitored metrics.
@@ -134,7 +137,7 @@ class Metric(models.Model):
         """
         obj_type = obj.__class__.__name__.lower()
         obj_pk = str(obj.pk).replace(':', '')
-        return os.path.join(settings.TIMEGRAPH_RRD_ROOT, obj_type, obj_pk, '%s.rrd' % self.pk)
+        return os.path.join(TIMEGRAPH_RRD_ROOT, obj_type, obj_pk, '%s.rrd' % self.pk)
 
     def __cache_key(self, obj):
         """
@@ -142,7 +145,7 @@ class Metric(models.Model):
         """
         obj_type = obj.__class__.__name__.lower()
         obj_pk = str(obj.pk).replace(':', '')
-        return '%s/%s/%s/%s' % (settings.TIMEGRAPH_CACHE_ROOT, obj_type, obj_pk, self.pk)
+        return '%s/%s/%s/%s' % (TIMEGRAPH_CACHE_ROOT, obj_type, obj_pk, self.pk)
 
     def __unicode__(self):
         return self.name

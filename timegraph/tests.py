@@ -42,6 +42,8 @@ class TestFormat(TestCase):
         self.assertEquals(format_value(None, ''), '')
         self.assertEquals(format_value('', 'b'), '')
         self.assertEquals(format_value('', ''), '')
+        self.assertEquals(format_value(object(), 'b'), '')
+        self.assertEquals(format_value(object(), ''), '')
 
     def test_format_int(self):
         self.assertEquals(format_value(0, 'b'), '0 b')
@@ -113,6 +115,11 @@ class TestFormat(TestCase):
         self.assertEquals(format_value('abc', 'foo'), 'abc foo')
         self.assertEquals(format_value('0.1.0', ''), '0.1.0')
 
+class TestGraph(TestCase):
+    def test_unicode(self):
+        m = Graph(title='foo bar')
+        self.assertEquals(unicode(m), 'foo bar')
+
 class TestMetric(TestCase):
     def test_is_summable(self):
         m = Metric(type='bool')
@@ -135,3 +142,7 @@ class TestMetric(TestCase):
 
         m = Metric(type='string')
         self.assertEquals(m.is_summable, False)
+
+    def test_unicode(self):
+        m = Metric(name='foo bar')
+        self.assertEquals(unicode(m), 'foo bar')

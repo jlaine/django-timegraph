@@ -10,4 +10,10 @@ DATABASES = {
     }
 }
 
-INSTALLED_APPS = ('timegraph', 'south')
+INSTALLED_APPS = (
+    'timegraph',
+    'south',
+    'django_nose',
+)
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'

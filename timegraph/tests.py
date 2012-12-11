@@ -168,15 +168,13 @@ class TestMetric(TestCase):
         m = Metric(type='string')
         self.assertEquals(m.is_summable, False)
 
-    def test_cache_key(self):
+    def test_set_get(self):
         metric = Metric.objects.get(pk=1)
         user = User.objects.get(pk=1)
-        self.assertEquals(metric._cache_key(user), 'timegraph/user/1/1')
+        metric.set_polling(user, '1.23')
 
-    def test_rrd_path(self):
-        metric = Metric.objects.get(pk=1)
-        user = User.objects.get(pk=1)
-        self.assertEquals(metric._rrd_path(user), os.path.join(settings.TIMEGRAPH_RRD_ROOT, 'user', '1', '1.rrd'))
+        value = metric.get_polling(user)
+        self.assertEquals(value, 1.23)
 
     def test_to_python_bool(self):
         m = Metric(type='bool')
@@ -210,6 +208,16 @@ class TestMetric(TestCase):
         self.assertEquals(m.to_python('0'), '0')
         self.assertEquals(m.to_python('1'), '1')
         self.assertEquals(m.to_python('abcd'), 'abcd')
+
+    def test_cache_key(self):
+        metric = Metric.objects.get(pk=1)
+        user = User.objects.get(pk=1)
+        self.assertEquals(metric._cache_key(user), 'timegraph/user/1/1')
+
+    def test_rrd_path(self):
+        metric = Metric.objects.get(pk=1)
+        user = User.objects.get(pk=1)
+        self.assertEquals(metric._rrd_path(user), os.path.join(settings.TIMEGRAPH_RRD_ROOT, 'user', '1', '1.rrd'))
 
     def test_unicode(self):
         m = Metric(name='foo bar')

@@ -212,7 +212,7 @@ class TestMetric(TestCase):
     def test_cache_key(self):
         metric = Metric.objects.get(pk=1)
         user = User.objects.get(pk=1)
-        self.assertEquals(metric._cache_key(user), 'timegraph/user/1/1')
+        self.assertEquals(metric._cache_key(user), '%s/user/1/1' % settings.TIMEGRAPH_CACHE_PREFIX)
 
     def test_rrd_path(self):
         metric = Metric.objects.get(pk=1)

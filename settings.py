@@ -19,5 +19,6 @@ INSTALLED_APPS = (
 )
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+TIMEGRAPH_CACHE_PREFIX = 'timegraph'
 TIMEGRAPH_RRD_ROOT = '/var/lib/rrdcached/db'
 USE_TZ = True

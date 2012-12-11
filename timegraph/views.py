@@ -66,7 +66,7 @@ def render_graph(request, graph, obj):
     else:
         stack = ''
     for metric in graph.metrics.all():
-        data_file = metric.rrd_path(obj)
+        data_file = metric._rrd_path(obj)
         value = metric.get_polling(obj)
         if os.path.exists(data_file):
             color = metric.graph_color
@@ -114,7 +114,7 @@ def render_metric(request, metric, object_list):
     options = []
     type = 'AREA'
     for obj in object_list:
-        data_file = metric.rrd_path(obj)
+        data_file = metric._rrd_path(obj)
         if os.path.exists(data_file):
             options += [
                 'DEF:%s=%s:%s:AVERAGE' % (count, data_file, metric.pk),

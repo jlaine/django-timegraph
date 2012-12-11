@@ -129,7 +129,8 @@ class Metric(models.Model):
             return value and int(value) or 0
         elif self.type == 'bool':
             return value in ['1', 'True']
-        return value
+        else:
+            return value and unicode(value) or ''
 
     def rrd_path(self, obj):
         """

@@ -143,6 +143,39 @@ class TestMetric(TestCase):
         m = Metric(type='string')
         self.assertEquals(m.is_summable, False)
 
+    def test_to_python_bool(self):
+        m = Metric(type='bool')
+        self.assertEquals(m.to_python(None), False)
+        self.assertEquals(m.to_python(''), False)
+        self.assertEquals(m.to_python('0'), False)
+        self.assertEquals(m.to_python('False'), False)
+        self.assertEquals(m.to_python('True'), True)
+        self.assertEquals(m.to_python('1'), True)
+
+    def test_to_python_float(self):
+        m = Metric(type='float')
+        self.assertEquals(m.to_python(None), 0.0)
+        self.assertEquals(m.to_python(''), 0.0)
+        self.assertEquals(m.to_python('0.0'), 0.0)
+        self.assertEquals(m.to_python('1.3'), 1.3)
+        self.assertEquals(m.to_python('10.1'), 10.1)
+
+    def test_to_python_int(self):
+        m = Metric(type='int')
+        self.assertEquals(m.to_python(None), 0)
+        self.assertEquals(m.to_python(''), 0)
+        self.assertEquals(m.to_python('0'), 0)
+        self.assertEquals(m.to_python('1'), 1)
+        self.assertEquals(m.to_python('10'), 10)
+
+    def test_to_python_string(self):
+        m = Metric(type='string')
+        self.assertEquals(m.to_python(None), '')
+        self.assertEquals(m.to_python(''), '')
+        self.assertEquals(m.to_python('0'), '0')
+        self.assertEquals(m.to_python('1'), '1')
+        self.assertEquals(m.to_python('abcd'), 'abcd')
+
     def test_unicode(self):
         m = Metric(name='foo bar')
         self.assertEquals(unicode(m), 'foo bar')

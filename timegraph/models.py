@@ -79,7 +79,39 @@ class Metric(models.Model):
     graph_color = models.CharField(blank=True, max_length=8, verbose_name=_('graph color'))
 
     def get_polling(self, obj):
-        return self.to_python(cache.get(self.__key(obj)))
+        """
+        Retrieves the latest value of the metric the given object.
+        """
+        return self.to_python(cache.get(self.__cache_key(obj)))
+
+    def set_polling(self, obj, value):
+        """
+        Stores the latest value of the metric for the given object.
+        """
+        cache.set(self.__cache_key(obj), value, 7 * 86400)
+        if self.rrd_enabled:
+            filepath = self.rrd_path(obj)
+            if not os.path.exists(filepath):
+                dirpath = os.path.dirname(filepath)
+                if not os.path.exists(dirpath):
+                    os.makedirs(dirpath)
+                rrdtool.create(filepath , 'DS:%s:GAUGE:300:U:U' % self.id,
+                    'RRA:AVERAGE:0.5:1:600',
+                    'RRA:AVERAGE:0.5:6:600',
+                    'RRA:AVERAGE:0.5:24:600',
+                    'RRA:AVERAGE:0.5:288:600',
+                    'RRA:MAX:0.5:1:600',
+                    'RRA:MAX:0.5:6:600',
+                    'RRA:MAX:0.5:24:600',
+                    'RRA:MAX:0.5:288:600') # Up to 600d
+            rrdtool.update(filepath, str("%i:%s" % (int(time.time()), value)))
+
+    @property
+    def is_summable(self):
+        """
+        Returns True if the metric is summable.
+        """
+        return self.unit not in [u'%', u'°', u'°C', u'°F']
 
     def to_python(self, value):
         """
@@ -93,35 +125,14 @@ class Metric(models.Model):
             return value in ['1', 'True']
         return value
 
-    def set_polling(self, obj, value):
-        cache.set(self.__key(obj), value, 7 * 86400)
-        if self.rrd_enabled:
-            filepath = self.rrd_path(obj)
-            if not os.path.exists(filepath):
-                dirpath = os.path.dirname(filepath)
-                if not os.path.exists(dirpath):
-                    os.mkdir(dirpath)
-                rrdtool.create(filepath , 'DS:%s:GAUGE:300:U:U' % self.id,
-                    'RRA:AVERAGE:0.5:1:600',
-                    'RRA:AVERAGE:0.5:6:600',
-                    'RRA:AVERAGE:0.5:24:600',
-                    'RRA:AVERAGE:0.5:288:600',
-                    'RRA:MAX:0.5:1:600',
-                    'RRA:MAX:0.5:6:600',
-                    'RRA:MAX:0.5:24:600',
-                    'RRA:MAX:0.5:288:600') # Up to 600d
-            rrdtool.update(filepath, "%s:%s"%(str(int(time.time())), str(value)))
-
-    @property
-    def is_summable(self):
-        return self.unit not in [u'%', u'°', u'°C', u'°F']
-
     def rrd_path(self, obj):
         obj_type = obj.__class__.__name__.lower()
         obj_pk = str(obj.pk).replace(':', '')
         return os.path.join(settings.TIMEGRAPH_RRD_ROOT, obj_type, obj_pk, '%s.rrd' % self.pk)
 
-    def __key(self, obj):
+    def __cache_key(self, obj):
+        """
+        """
         obj_type = obj.__class__.__name__.lower()
         obj_pk = str(obj.pk).replace(':', '')
         return '%s/%s/%s/%s' % (settings.TIMEGRAPH_CACHE_ROOT, obj_type, obj_pk, self.pk)

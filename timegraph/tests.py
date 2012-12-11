@@ -122,7 +122,7 @@ class TestGraph(TestCase):
         self.assertEquals(unicode(m), 'foo bar')
 
 class TestMetric(TestCase):
-    fixtures = ['test_metrics.json', 'test_users.json']
+    fixtures = ['timegraph/test_metrics.json', 'timegraph/test_users.json']
 
     def test_is_summable(self):
         m = Metric(type='bool')

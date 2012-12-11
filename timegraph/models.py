@@ -111,7 +111,7 @@ class Metric(models.Model):
         """
         Returns True if the metric is summable.
         """
-        return self.unit not in [u'%', u'°', u'°C', u'°F']
+        return (self.type in ['float', 'int']) and (self.unit not in [u'%', u'°', u'°C', u'°F'])
 
     def to_python(self, value):
         """

@@ -34,7 +34,7 @@
 
 from django.test import TestCase
 
-from timegraph.models import format_value
+from timegraph.models import format_value, Graph, Metric
 
 class TestFormat(TestCase):
     def test_format_none(self):
@@ -112,3 +112,20 @@ class TestFormat(TestCase):
     def test_format_string(self):
         self.assertEquals(format_value('abc', 'foo'), 'abc foo')
         self.assertEquals(format_value('0.1.0', ''), '0.1.0')
+
+class TestMetric(TestCase):
+    def test_is_summable(self):
+        m = Metric(type='bool')
+        self.assertEquals(m.is_summable, False)
+
+        m = Metric(type='float', unit='s')
+        self.assertEquals(m.is_summable, True)
+
+        m = Metric(type='float', unit=u'°C')
+        self.assertEquals(m.is_summable, False)
+
+        m = Metric(type='int', unit='err')
+        self.assertEquals(m.is_summable, True)
+
+        m = Metric(type='string')
+        self.assertEquals(m.is_summable, False)

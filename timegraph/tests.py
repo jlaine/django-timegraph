@@ -32,10 +32,26 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
+import os
+import shutil
+import tempfile
+
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.test import TestCase
 
+import timegraph
 from timegraph.models import format_value, Graph, Metric
+
+def setup_test_environment():
+    timegraph.original_rrd_root = settings.TIMEGRAPH_RRD_ROOT
+    settings.TIMEGRAPH_RRD_ROOT = tempfile.mkdtemp()
+
+def teardown_test_environment():
+    shutil.rmtree(settings.TIMEGRAPH_RRD_ROOT)
+
+    settings.TIMEGRAPH_RRD_ROOT = timegraph.original_rrd_root
+    del timegraph.original_rrd_root
 
 class TestFormat(TestCase):
     def test_format_none(self):
@@ -124,6 +140,12 @@ class TestGraph(TestCase):
 class TestMetric(TestCase):
     fixtures = ['timegraph/test_metrics.json', 'timegraph/test_users.json']
 
+    def setUp(self):
+        setup_test_environment()
+
+    def tearDown(self):
+        teardown_test_environment()
+
     def test_is_summable(self):
         m = Metric(type='bool')
         self.assertEquals(m.is_summable, False)
@@ -154,7 +176,7 @@ class TestMetric(TestCase):
     def test_rrd_path(self):
         metric = Metric.objects.get(pk=1)
         user = User.objects.get(pk=1)
-        self.assertEquals(metric._rrd_path(user), '/var/lib/rrdcached/db/user/1/1.rrd')
+        self.assertEquals(metric._rrd_path(user), os.path.join(settings.TIMEGRAPH_RRD_ROOT, 'user', '1', '1.rrd'))
 
     def test_to_python_bool(self):
         m = Metric(type='bool')

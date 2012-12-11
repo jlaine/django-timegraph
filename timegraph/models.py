@@ -41,9 +41,6 @@ from django.core.cache import cache
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-TIMEGRAPH_CACHE_PREFIX = getattr(settings, 'TIMEGRAPH_CACHE_PREFIX', 'timegraph')
-TIMEGRAPH_RRD_ROOT = getattr(settings, 'TIMEGRAPH_RRD_ROOT', '/var/lib/rrdcached/db')
-
 class Graph(models.Model):
     """
     A model representing a graph of a set of monitored metrics.
@@ -136,17 +133,19 @@ class Metric(models.Model):
         """
         RRD path for the given object.
         """
+        rrd_root = getattr(settings, 'TIMEGRAPH_RRD_ROOT', '/var/lib/rrdcached/db')
         obj_type = obj.__class__.__name__.lower()
         obj_pk = str(obj.pk).replace(':', '')
-        return os.path.join(TIMEGRAPH_RRD_ROOT, obj_type, obj_pk, '%s.rrd' % self.pk)
+        return os.path.join(rrd_root, obj_type, obj_pk, '%s.rrd' % self.pk)
 
     def _cache_key(self, obj):
         """
         Cache key for the given object.
         """
+        cache_prefix = getattr(settings, 'TIMEGRAPH_CACHE_PREFIX', 'timegraph')
         obj_type = obj.__class__.__name__.lower()
         obj_pk = str(obj.pk).replace(':', '')
-        return '%s/%s/%s/%s' % (TIMEGRAPH_CACHE_PREFIX, obj_type, obj_pk, self.pk)
+        return '%s/%s/%s/%s' % (cache_prefix, obj_type, obj_pk, self.pk)
 
     def __unicode__(self):
         return self.name

@@ -1,0 +1,12 @@
+[
+    {
+        "pk": 1,
+        "model": "timegraph.metric",
+        "fields": {
+            "name": "thoughts per second",
+            "type": "float",
+            "unit": "thought/s",
+            "parameter": "thoughts"
+        }
+    }
+]

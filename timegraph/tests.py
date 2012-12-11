@@ -32,6 +32,7 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
+from django.contrib.auth.models import User
 from django.test import TestCase
 
 from timegraph.models import format_value, Graph, Metric
@@ -121,6 +122,8 @@ class TestGraph(TestCase):
         self.assertEquals(unicode(m), 'foo bar')
 
 class TestMetric(TestCase):
+    fixtures = ['test_metrics.json', 'test_users.json']
+
     def test_is_summable(self):
         m = Metric(type='bool')
         self.assertEquals(m.is_summable, False)
@@ -142,6 +145,16 @@ class TestMetric(TestCase):
 
         m = Metric(type='string')
         self.assertEquals(m.is_summable, False)
+
+    def test_cache_key(self):
+        metric = Metric.objects.get(pk=1)
+        user = User.objects.get(pk=1)
+        self.assertEquals(metric._cache_key(user), 'timegraph/user/1/1')
+
+    def test_rrd_path(self):
+        metric = Metric.objects.get(pk=1)
+        user = User.objects.get(pk=1)
+        self.assertEquals(metric._rrd_path(user), '/var/lib/rrdcached/db/user/1/1.rrd')
 
     def test_to_python_bool(self):
         m = Metric(type='bool')

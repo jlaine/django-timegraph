@@ -11,9 +11,12 @@ DATABASES = {
 }
 
 INSTALLED_APPS = (
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
     'timegraph',
     'south',
     'django_nose',
 )
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+USE_TZ = True

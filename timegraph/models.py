@@ -88,15 +88,15 @@ class Metric(models.Model):
         """
         Retrieves the latest value of the metric the given object.
         """
-        return self.to_python(cache.get(self.__cache_key(obj)))
+        return self.to_python(cache.get(self._cache_key(obj)))
 
     def set_polling(self, obj, value):
         """
         Stores the latest value of the metric for the given object.
         """
-        cache.set(self.__cache_key(obj), value, 7 * 86400)
+        cache.set(self._cache_key(obj), value, 7 * 86400)
         if self.rrd_enabled:
-            filepath = self.rrd_path(obj)
+            filepath = self._rrd_path(obj)
             if not os.path.exists(filepath):
                 dirpath = os.path.dirname(filepath)
                 if not os.path.exists(dirpath):
@@ -132,7 +132,7 @@ class Metric(models.Model):
         else:
             return value and unicode(value) or ''
 
-    def rrd_path(self, obj):
+    def _rrd_path(self, obj):
         """
         RRD path for the given object.
         """
@@ -140,7 +140,7 @@ class Metric(models.Model):
         obj_pk = str(obj.pk).replace(':', '')
         return os.path.join(TIMEGRAPH_RRD_ROOT, obj_type, obj_pk, '%s.rrd' % self.pk)
 
-    def __cache_key(self, obj):
+    def _cache_key(self, obj):
         """
         Cache key for the given object.
         """

@@ -124,8 +124,14 @@ class TestMetric(TestCase):
         m = Metric(type='float', unit=u'°C')
         self.assertEquals(m.is_summable, False)
 
+        m = Metric(type='float', unit=u'°F')
+        self.assertEquals(m.is_summable, False)
+
         m = Metric(type='int', unit='err')
         self.assertEquals(m.is_summable, True)
+
+        m = Metric(type='int', unit='%')
+        self.assertEquals(m.is_summable, False)
 
         m = Metric(type='string')
         self.assertEquals(m.is_summable, False)

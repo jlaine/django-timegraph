@@ -38,8 +38,7 @@ function timegraph_controls(controls, images) {
     var start = dict['start'] ? parseInt(dict['start']) : -86400;
     var end = dict['end'] ? parseInt(dict['end']) : -1;
 
-    var html = '<label for="id_timespan">Presets:</label>';
-    html += '<select class="timegraph-preset" id="id_timespan">';
+    var html = '<select class="timegraph-preset">';
     for (var i in timespans) {
         html += '<option value="' + i + '"';
         if (timespans[i].start == start)
@@ -73,7 +72,7 @@ function timegraph_controls(controls, images) {
     }});
     end_field.datetimepicker('setDate', (new Date(now.getTime() + 1000 * end)));
 
-    var timespan = controls.find('select');
+    var timespan = controls.find('select.timegraph-preset');
     timespan.change(function() {
         var i = parseInt(timespan.val());
         if (i >= 0 && i < timespans.length) {

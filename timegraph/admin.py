@@ -39,10 +39,12 @@ from timegraph.models import Graph, Metric
 class GraphAdmin(admin.ModelAdmin):
     list_display = ('slug', 'title', 'is_visible')
     list_filter = ('is_visible',)
+    search_fields = ('slug', 'title')
 
 class MetricAdmin(admin.ModelAdmin):
     list_display = ('name', 'parameter', 'type', 'unit', 'rrd_enabled')
     list_filter = ('type', 'unit', 'rrd_enabled')
+    search_fields = ('name', 'parameter')
 
 admin.site.register(Graph, GraphAdmin)
 admin.site.register(Metric, MetricAdmin)

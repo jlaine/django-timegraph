@@ -39,7 +39,7 @@ function timegraph_controls(controls, images) {
     var end = dict['end'] ? parseInt(dict['end']) : -1;
 
     var html = '<label for="id_timespan">Presets:</label>';
-    html += '<select id="id_timespan">';
+    html += '<select class="timegraph-preset" id="id_timespan">';
     for (var i in timespans) {
         html += '<option value="' + i + '"';
         if (timespans[i].start == start)
@@ -47,11 +47,11 @@ function timegraph_controls(controls, images) {
         html += '>' + timespans[i].title + '</option>';
     }
     html += '</select>';
-    html += '<input class="timespan-start" type="text" size="16"/>';
-    html += '<input class="timespan-end" type="text" size="16"/>';
+    html += '<input class="timegraph-start" type="text" size="16"/>';
+    html += '<input class="timegraph-end" type="text" size="16"/>';
     controls.html(html);
 
-    var start_field = controls.find('input.timespan-start');
+    var start_field = controls.find('input.timegraph-start');
     start_field.datetimepicker({
         dateFormat: 'dd/mm/yy',
         onSelect: function(dateText, inst) {
@@ -62,7 +62,7 @@ function timegraph_controls(controls, images) {
     }});
     start_field.datetimepicker('setDate', (new Date(now.getTime() + 1000 * start)));
     
-    var end_field = controls.find('input.timespan-end');
+    var end_field = controls.find('input.timegraph-end');
     end_field.datetimepicker({
         dateFormat: 'dd/mm/yy',
         onSelect: function(dateText, inst) {
@@ -119,8 +119,8 @@ $('.timegraph-graphs img').click(function() {
 
     overlay.html(html);
     overlay.dialog({
-        height: 300,
-        width: 500,
+        height: 400,
+        width: 600,
         title: title,
         resizeStop: function(event, ui) {
             var image = overlay.find('img');

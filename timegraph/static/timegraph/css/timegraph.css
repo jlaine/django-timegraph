@@ -8,7 +8,11 @@
     margin-top: 5px;
 }
 
-/* css for timepicker */
+.timegraph-preset, .timegraph-start, .timegraph-end {
+    width: 140px;
+}
+
+/* timepicker */
 .ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
 .ui-timepicker-div dl { text-align: left; }
 .ui-timepicker-div dl dt { height: 25px; margin-bottom: -25px; }
@@ -16,8 +20,13 @@
 .ui-timepicker-div td { font-size: 90%; }
 .ui-tpicker-grid-label { background: none; border: none; margin: 0; padding: 0; }
 
+/* dialog */
 .ui-dialog {
     box-shadow: 0 0 15px #666;
+}
+
+.ui-dialog form {
+   margin: 0;
 }
 
 .ui-dialog p.submit {

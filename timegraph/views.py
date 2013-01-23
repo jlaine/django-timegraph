@@ -65,7 +65,7 @@ def render_graph(request, graph, obj):
         stack = ':STACK'
     else:
         stack = ''
-    for metric in graph.metrics.all():
+    for metric in graph.metrics.order_by('graph_order'):
         data_file = metric._rrd_path(obj)
         value = metric.get_polling(obj)
         if os.path.exists(data_file):

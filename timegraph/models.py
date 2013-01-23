@@ -80,6 +80,7 @@ class Metric(models.Model):
     unit = models.CharField(max_length=6, blank=True, verbose_name=_('unit'))
     rrd_enabled = models.BooleanField(default=True, verbose_name=_('RRD enabled'))
     graph_color = models.CharField(blank=True, max_length=8, verbose_name=_('graph color'))
+    graph_order = models.IntegerField(default=0, verbose_name=_('graph order'))
 
     def get_polling(self, obj):
         """

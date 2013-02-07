@@ -12,10 +12,12 @@ var timespans = [
 
 function parse_qs(qs) {
     var dict = {};
-    $.each(qs.split('&'), function(i, v){
-      var pair = v.split('=');
-      dict[pair[0]] = decodeURIComponent(pair[1]);
-    });
+    if (qs) {
+        $.each(qs.split('&'), function(i, v){
+          var pair = v.split('=');
+          dict[pair[0]] = decodeURIComponent(pair[1]);
+        });
+    }
     return dict;
 }
 

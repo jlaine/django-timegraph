@@ -123,8 +123,8 @@ $('.timegraph-graphs img').click(function() {
     html += '<h3>' + title + '</h3>';
     html += '</div>';
     html += '<div class="modal-body">';
-    html += '<img width="640" height="440" src="' + $(this).attr('src') + '"/>';
-    html += '<form class="timegraph-controls"></form>';
+    html += '<img width="640" height="420" src="' + $(this).attr('src') + '"/>';
+    html += '<form class="timegraph-controls" style="margin: 10px 0 0"></form>';
     html += '</div>';
     html += '</div>';
 
@@ -161,7 +161,7 @@ $('.timegraph-graphs img').click(function() {
     // Remove title and adjust image size.
     update_image(image, {
         'width': 640,
-        'height': 440,
+        'height': 420,
         'title': ''});
 });
 

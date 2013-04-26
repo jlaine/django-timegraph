@@ -108,28 +108,29 @@ function update_image(images, options) {
 
 $('.timegraph-graphs img').click(function() {
     var overlay = $('#timegraph-overlay');
-    if (!overlay.length)
-        overlay = $('<div id="timegraph-overlay"></div>');
+    if (!overlay.length) {
+        $('body').append('<div id="timegraph-overlay"></div>');
+        overlay = $('#timegraph-overlay');
+    }
 
     var qs = $(this).attr('src').split('?')[1];
     var nvpair = parse_qs(qs);
     var title = nvpair['title'];
 
-    var html = '<img src="' + $(this).attr('src') + '"/>';
+    var html = '<div class="modal">';
+    html += '<div class="modal-header">';
+    html += '<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>';
+    html += '<h3>' + title + '</h3>';
+    html += '</div>';
+    html += '<div class="modal-body">';
+    html += '<img width="640" height="440" src="' + $(this).attr('src') + '"/>';
     html += '<form class="timegraph-controls"></form>';
+    html += '</div>';
+    html += '</div>';
 
     overlay.html(html);
-    overlay.dialog({
-        height: 400,
-        width: 600,
-        title: title,
-        resizeStop: function(event, ui) {
-            var image = overlay.find('img');
-            update_image(image, {
-                'height': Math.floor(overlay.height() - overlay.find('form').height() - 4),
-                'width': Math.floor(overlay.width())});
-        }
-    });
+    overlay.find('div.modal').modal().css({width: '670px', 'margin-left': '-335px'});
+    overlay.find('div.modal-body').css({'max-height': '460px'});
 
     var image = overlay.find('img');
     timegraph_controls(overlay.find('form'), image);
@@ -159,8 +160,8 @@ $('.timegraph-graphs img').click(function() {
 
     // Remove title and adjust image size.
     update_image(image, {
-        'height': Math.floor(overlay.height() - overlay.find('form').height() - 4),
-        'width': Math.floor(overlay.width()),
+        'width': 640,
+        'height': 440,
         'title': ''});
 });
 

@@ -160,28 +160,29 @@ def format_with_prefix(value, unit):
     """
     Formats a float value with the appropriate SI prefix.
     """
-    if value >= 1000000000000000:
-        return u'%.1f P%s' % (value / 1000000000000000.0, unit)
-    elif value >= 1000000000000:
-        return u'%.1f T%s' % (value / 1000000000000.0, unit)
-    elif value >= 1000000000:
-        return u'%.1f G%s' % (value / 1000000000.0, unit)
-    elif value >= 1000000:
-        return u'%.1f M%s' % (value / 1000000.0, unit)
-    elif value >= 1000:
-        return u'%.1f k%s' % (value / 1000.0, unit)
+    base = 1000.0
+    if value >= pow(base, 5):
+        return u'%.1f P%s' % (value / pow(base, 5), unit)
+    elif value >= pow(base, 4):
+        return u'%.1f T%s' % (value / pow(base, 4), unit)
+    elif value >= pow(base, 3):
+        return u'%.1f G%s' % (value / pow(base, 3), unit)
+    elif value >= pow(base, 2):
+        return u'%.1f M%s' % (value / pow(base, 2), unit)
+    elif value >= base:
+        return u'%.1f k%s' % (value / base, unit)
     elif value >= 1 or not value:
         return u'%.1f %s' % (value, unit)
-    elif value >= 0.001:
-        return u'%.1f m%s' % (value * 1000.0, unit)
-    elif value >= 0.000001:
-        return u'%.1f µ%s' % (value * 1000000.0, unit)
-    elif value >= 0.000000001:
-        return u'%.1f n%s' % (value * 1000000000.0, unit)
-    elif value >= 0.000000000001:
-        return u'%.1f p%s' % (value * 1000000000000.0, unit)
+    elif value >= pow(base, -1):
+        return u'%.1f m%s' % (value * base, unit)
+    elif value >= pow(base, -2):
+        return u'%.1f µ%s' % (value * pow(base, 2), unit)
+    elif value >= pow(base, -3):
+        return u'%.1f n%s' % (value * pow(base, 3), unit)
+    elif value >= pow(base, -4):
+        return u'%.1f p%s' % (value * pow(base, 4), unit)
     else:
-        return u'%.1f f%s' % (value * 1000000000000000.0, unit)
+        return u'%.1f f%s' % (value * pow(base, 5), unit)
     
 def format_value(value, unit):
     """

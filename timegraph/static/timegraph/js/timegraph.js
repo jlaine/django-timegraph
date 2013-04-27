@@ -57,35 +57,41 @@ function timegraph_controls(controls, images) {
         html += '>' + timespans[i].title + '</option>';
     }
     html += '</select>';
-    html += '<input class="timegraph-start" type="text" size="16"/>';
-    html += '<input class="timegraph-end" type="text" size="16"/>';
+    html += '<span class="input-append date timegraph-start">';
+    html += '<input data-format="dd/MM/yyyy hh:mm:ss" type="text"/>';
+    html += '<span class="add-on">';
+    html += '<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>';
+    html += '</span>';
+    html += '</span>';
+    html += '<span class="input-append date timegraph-end">';
+    html += '<input data-format="dd/MM/yyyy hh:mm:ss" type="text"/>';
+    html += '<span class="add-on">';
+    html += '<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>';
+    html += '</span>';
+    html += '</span>';
     controls.html(html);
 
-    var start_field = controls.find('input.timegraph-start');
-    start_field.datetimepicker({
-        dateFormat: 'dd/mm/yy',
-        onSelect: function(dateText, inst) {
-            var date = start_field.datetimepicker('getDate');
-            update_image(images, {'start': date_to_offset(date)});
-    }});
-    start_field.datetimepicker('setDate', offset_to_date(start));
+    var start_field = controls.find('.timegraph-start').datetimepicker();
+    var start_picker = start_field.data('datetimepicker');
+    start_field.on('changeDate', function(e) {
+        update_image(images, {start: date_to_offset(start_picker.getDate())});
+    });
+    start_picker.setDate(offset_to_date(start));
 
-    var end_field = controls.find('input.timegraph-end');
-    end_field.datetimepicker({
-        dateFormat: 'dd/mm/yy',
-        onSelect: function(dateText, inst) {
-            var date = end_field.datetimepicker('getDate');
-            update_image(images, {'end': date_to_offset(date)});
-    }});
-    end_field.datetimepicker('setDate', offset_to_date(end));
+    var end_field = controls.find('.timegraph-end').datetimepicker();
+    var end_picker = end_field.data('datetimepicker');
+    end_field.on('changeDate', function(e) {
+        update_image(images, {end: date_to_offset(end_picker.getDate())});
+    });
+    end_picker.setDate(offset_to_date(end));
 
     var timespan = controls.find('select.timegraph-preset');
     timespan.change(function() {
         var i = parseInt(timespan.val());
         if (i >= 0 && i < timespans.length) {
             // update start / end
-            start_field.datetimepicker('setDate', offset_to_date(timespans[i].start));
-            end_field.datetimepicker('setDate', offset_to_end(timespans[i].end));
+            start_picker.setDate(offset_to_date(timespans[i].start));
+            end_picker.setDate(offset_to_date(timespans[i].end));
 
             // update images
             update_image(images, {

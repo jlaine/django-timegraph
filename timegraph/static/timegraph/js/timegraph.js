@@ -35,8 +35,17 @@ function timegraph_controls(controls, images) {
     var bits = images.attr('src').split('?');
     var dict = parse_qs(bits[1]);
 
+    function date_to_offset(date) {
+        var now = new Date();
+        return Math.floor((date.getTime() - now.getTime()) / 1000);
+    }
+
+    function offset_to_date(offset) {
+        var now = new Date();
+        return new Date(now.getTime() + 1000 * offset);
+    }
+
     // determine current values
-    var now = new Date();
     var start = dict['start'] ? parseInt(dict['start']) : -86400;
     var end = dict['end'] ? parseInt(dict['end']) : -1;
 
@@ -56,34 +65,27 @@ function timegraph_controls(controls, images) {
     start_field.datetimepicker({
         dateFormat: 'dd/mm/yy',
         onSelect: function(dateText, inst) {
-            var now = new Date();
             var date = start_field.datetimepicker('getDate');
-            update_image(images, {
-                'start': Math.floor((date.getTime() - now.getTime()) / 1000)});
+            update_image(images, {'start': date_to_offset(date)});
     }});
-    start_field.datetimepicker('setDate', (new Date(now.getTime() + 1000 * start)));
-    
+    start_field.datetimepicker('setDate', offset_to_date(start));
+
     var end_field = controls.find('input.timegraph-end');
     end_field.datetimepicker({
         dateFormat: 'dd/mm/yy',
         onSelect: function(dateText, inst) {
-            var now = new Date();
             var date = end_field.datetimepicker('getDate');
-            update_image(images, {
-                'end': Math.floor((date.getTime() - now.getTime()) / 1000)});
+            update_image(images, {'end': date_to_offset(date)});
     }});
-    end_field.datetimepicker('setDate', (new Date(now.getTime() + 1000 * end)));
+    end_field.datetimepicker('setDate', offset_to_date(end));
 
     var timespan = controls.find('select.timegraph-preset');
     timespan.change(function() {
         var i = parseInt(timespan.val());
         if (i >= 0 && i < timespans.length) {
             // update start / end
-            var now = new Date();
-            start_field.datetimepicker('setDate',
-                (new Date(now.getTime() + 1000 * timespans[i].start)));
-            end_field.datetimepicker('setDate',
-                (new Date(now.getTime() + 1000 * timespans[i].end)));
+            start_field.datetimepicker('setDate', offset_to_date(timespans[i].start));
+            end_field.datetimepicker('setDate', offset_to_end(timespans[i].end));
 
             // update images
             update_image(images, {

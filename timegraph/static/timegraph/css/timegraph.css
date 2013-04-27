@@ -8,7 +8,7 @@
     margin-top: 5px;
 }
 
-.timegraph-preset, .timegraph-start, .timegraph-end {
+.timegraph-preset, .timegraph-start input, .timegraph-end input {
     width: 140px;
 }
 

@@ -143,6 +143,7 @@ $('.timegraph-graphs img').click(function() {
     var image = overlay.find('img');
     timegraph_controls(overlay.find('form'), image);
 
+/*
     // Handle time-shifting using drags.
     var start_offset;
     image.load(function() {
@@ -165,11 +166,12 @@ $('.timegraph-graphs img').click(function() {
                 'end': end + time_offset});
         },
     });
+*/
 
     // Remove title and adjust image size.
     update_image(image, {
-        'width': 640,
-        'height': 420,
+        'width': image.attr('width'),
+        'height': image.attr('height'),
         'title': ''});
 });
 

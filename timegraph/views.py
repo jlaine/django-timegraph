@@ -2,6 +2,7 @@
 #
 # django-timegraph - monitoring graphs for django
 # Copyright (c) 2011-2012, Wifirst
+# Copyright (c) 2013, Jeremy Lainé
 # All rights reserved.
 #
 # See AUTHORS file for a full list of contributors.

@@ -32,6 +32,7 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
+import math
 import os
 import rrdtool
 import time
@@ -161,29 +162,14 @@ def format_with_prefix(value, unit):
     Formats a float value with the appropriate SI prefix.
     """
     base = 1000.0
-    if value >= pow(base, 5):
-        return u'%.1f P%s' % (value / pow(base, 5), unit)
-    elif value >= pow(base, 4):
-        return u'%.1f T%s' % (value / pow(base, 4), unit)
-    elif value >= pow(base, 3):
-        return u'%.1f G%s' % (value / pow(base, 3), unit)
-    elif value >= pow(base, 2):
-        return u'%.1f M%s' % (value / pow(base, 2), unit)
-    elif value >= base:
-        return u'%.1f k%s' % (value / base, unit)
-    elif value >= 1 or not value:
-        return u'%.1f %s' % (value, unit)
-    elif value >= pow(base, -1):
-        return u'%.1f m%s' % (value * base, unit)
-    elif value >= pow(base, -2):
-        return u'%.1f µ%s' % (value * pow(base, 2), unit)
-    elif value >= pow(base, -3):
-        return u'%.1f n%s' % (value * pow(base, 3), unit)
-    elif value >= pow(base, -4):
-        return u'%.1f p%s' % (value * pow(base, 4), unit)
+    prefixes = ['', 'k', 'M', 'G', 'T', 'P', 'f', 'p', 'n', u'µ', 'm']
+    l = value and max(-5, min(math.log(value) / math.log(base), 5)) or 0
+    if l >= 0:
+        l = int(l)
     else:
-        return u'%.1f f%s' % (value * pow(base, 5), unit)
-    
+        l = int(math.floor(l))
+    return u'%.1f %s%s' % (value / (base ** l), prefixes[l], unit)
+
 def format_value(value, unit):
     """
     Formats the given value with the specified unit.

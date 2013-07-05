@@ -162,8 +162,8 @@ def format_with_prefix(value, unit):
     Formats a float value with the appropriate SI prefix.
     """
     base = 1000.0
-    prefixes = ['', 'k', 'M', 'G', 'T', 'P', 'f', 'p', 'n', u'µ', 'm']
-    l = value and max(-5, min(math.log(value) / math.log(base), 5)) or 0
+    prefixes = ['', 'k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y', 'y', 'z', 'a', 'f', 'p', 'n', u'µ', 'm']
+    l = value and max(-8, min(math.log(value) / math.log(base), 8)) or 0
     if l >= 0:
         l = int(l)
     else:

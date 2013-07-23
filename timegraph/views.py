@@ -66,7 +66,10 @@ def render_graph(request, graph, obj):
         stack = ':STACK'
     else:
         stack = ''
+    is_memory = False
     for metric in graph.metrics.order_by('graph_order'):
+        if metric.unit in ['b', 'B']:
+            is_memory = True
         data_file = metric._rrd_path(obj)
         value = metric.get_polling(obj)
         if os.path.exists(data_file):
@@ -88,6 +91,8 @@ def render_graph(request, graph, obj):
     if not count:
         raise Http404
 
+    if is_memory:
+        options += ['--base', '1024']
     if graph.lower_limit is not None:
         options += [ '--lower-limit', str(graph.lower_limit) ]
         options += [ '-r' ]

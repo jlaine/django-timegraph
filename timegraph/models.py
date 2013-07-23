@@ -164,6 +164,11 @@ def format_with_prefix(value, unit):
     """
     base = 1000.0
     prefixes = ['', 'k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y', 'y', 'z', 'a', 'f', 'p', 'n', u'µ', 'm']
+    if unit in ['b', 'B']:
+        base = 1024.0
+        for i, prefix in enumerate(prefixes):
+            if prefix:
+                prefixes[i] = prefix + 'i'
     l = value and max(-8, min(math.log(value) / math.log(base), 8)) or 0
     if l >= 0:
         l = int(l)

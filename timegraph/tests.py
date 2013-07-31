@@ -63,6 +63,21 @@ class TestFormat(TestCase):
         self.assertEquals(format_value(object(), 'b'), '')
         self.assertEquals(format_value(object(), ''), '')
 
+    def test_format_byte(self):
+        self.assertEquals(format_value(0, 'b'), '0 b')
+        self.assertEquals(format_value(1, 'b'), '1 b')
+        self.assertEquals(format_value(1024, 'b'), '1.0 kib')
+        self.assertEquals(format_value(2048, 'b'), '2.0 kib')
+        self.assertEquals(format_value(1048576, 'b'), '1.0 Mib')
+        self.assertEquals(format_value(1073741824, 'b'), '1.0 Gib')
+        self.assertEquals(format_value(1099511627776, 'b'), '1.0 Tib')
+        self.assertEquals(format_value(1125899906842624, 'b'), '1.0 Pib')
+        self.assertEquals(format_value(1152921504606846976, 'b'), '1.0 Eib')
+        # FIXME: there seems to be a rounding error
+        #self.assertEquals(format_value(1180591620717411303424, 'b'), '1.0 Zib')
+        #self.assertEquals(format_value(1208925819614629174706176, 'b'), '1.0 Yib')
+        self.assertEquals(format_value(1237940039285380274899124224, 'b'), '1024.0 Yib')
+
     def test_format_int(self):
         self.assertEquals(format_value(0, 's'), '0 s')
         self.assertEquals(format_value(1, 's'), '1 s')

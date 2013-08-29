@@ -33,7 +33,6 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-import time
 from django import forms
 
 class GraphForm(forms.Form):
@@ -43,7 +42,7 @@ class GraphForm(forms.Form):
     width = forms.IntegerField(required=False, initial=300)
     height = forms.IntegerField(required=False, initial=200)
     title = forms.CharField(required=False)
-    watermark = forms.CharField(required=False, initial='(c) %s Wifirst' % time.strftime('%Y'))
+    watermark = forms.CharField(required=False)
 
     def clean(self):
         """

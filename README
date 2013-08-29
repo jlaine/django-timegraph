@@ -40,6 +40,13 @@ To plot a graph for the 'device' object:
         graph = get_object_or_404(Graph, slug=graph_slug)
         return render_graph(request, graph, device)
 
+To set the default watermark for the generated graphs:
+
+    import time
+    from timegraph.forms import GraphForm
+
+    GraphForm.base_fields['watermark'].initial = '(c) %s My Company' % time.strftime('%Y')
+
 Homepage
 ========
 

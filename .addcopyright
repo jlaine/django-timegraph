@@ -2,6 +2,7 @@
 'directories': [
     'timegraph',
     'timegraph/templatetags',
+    'timegraph/tests',
 ],
 
 'license': """django-timegraph - monitoring graphs for django

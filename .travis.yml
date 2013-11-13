@@ -6,7 +6,6 @@ env:
   - DJANGO=1.5
   - DJANGO=1.6
 install:
-  - sudo apt-get -qq update
-  - sudo apt-get -qq install python-rrdtool
   - pip install -q Django==$DJANGO --use-mirrors
+  - pip install -q python-rrdtool --use-mirrors
 script: python manage.py test timegraph

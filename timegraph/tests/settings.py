@@ -105,8 +105,6 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'coconuts.tests.urls'
-
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -117,5 +115,6 @@ INSTALLED_APPS = (
     'timegraph',
 )
 
+TIMEGRAPH_CACHE_PREFIX = 'timegraph'
 # FIXME: make this windows-friendly
 TIMEGRAPH_RRD_ROOT = '/tmp/timegraph.test.%s' % getpass.getuser()

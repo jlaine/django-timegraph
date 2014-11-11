@@ -97,7 +97,7 @@ def render_graph(request, graph, obj):
     options += form.options()
     image_data = timegraph_rrd(options)
 
-    return HttpResponse(image_data, mimetype='image/png')
+    return HttpResponse(image_data, content_type='image/png')
 
 def render_metric(request, metric, object_list):
     """
@@ -131,7 +131,7 @@ def render_metric(request, metric, object_list):
     options += form.options()
     image_data = timegraph_rrd(options)
 
-    return HttpResponse(image_data, mimetype='image/png')
+    return HttpResponse(image_data, content_type='image/png')
 
 def timegraph_rrd(options):
     """

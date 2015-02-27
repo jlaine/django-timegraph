@@ -178,7 +178,7 @@ class TestGraph(TestCase):
         self.assertEquals(unicode(m), 'foo bar')
 
 class TestMetric(TestCase):
-    fixtures = ['test_metrics.json', 'test_users.json']
+    fixtures = ['test_timegraph_metrics.json', 'test_timegraph_users.json']
 
     def setUp(self):
         setup_test_environment()

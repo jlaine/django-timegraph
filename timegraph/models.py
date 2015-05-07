@@ -43,12 +43,17 @@ class Graph(models.Model):
     """
     A model representing a graph of a set of monitored metrics.
     """
+    TYPE_CHOICES = (
+        ('AREA', 'area'),
+        ('LINE', 'line'),
+    )
+
     slug = models.SlugField()
     metrics = models.ManyToManyField('Metric')
     title = models.CharField(max_length=255)
     lower_limit = models.IntegerField(blank=True, null=True, default=0)
     upper_limit = models.IntegerField(blank=True, null=True)
-    type = models.CharField(max_length=255, default='LINE')
+    type = models.CharField(choices=TYPE_CHOICES, max_length=255, default='LINE')
     is_stacked = models.BooleanField(default=False)
     is_visible = models.BooleanField(default=True)
 

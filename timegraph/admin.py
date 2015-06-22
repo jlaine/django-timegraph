@@ -39,7 +39,7 @@ class GraphAdmin(admin.ModelAdmin):
     search_fields = ('slug', 'title')
 
 class MetricAdmin(admin.ModelAdmin):
-    list_display = ('name', 'parameter', 'type', 'unit', 'rrd_enabled')
+    list_display = ('name', 'parameter', 'type', 'unit', 'rrd_enabled', 'graph_order')
     list_filter = ('type', 'unit', 'rrd_enabled')
     search_fields = ('name', 'parameter')
 

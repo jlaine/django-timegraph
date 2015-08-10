@@ -14,10 +14,8 @@ INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'timegraph',
-    'django_nose',
 )
 
-TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 TIMEGRAPH_CACHE_PREFIX = 'timegraph'
 TIMEGRAPH_RRD_ROOT = '/var/lib/rrdcached/db'
 USE_TZ = True

@@ -10,10 +10,10 @@
 # Redistribution and use in source and binary forms, with or without modification,
 # are permitted provided that the following conditions are met:
 #
-#     1. Redistributions of source code must retain the above copyright notice, 
+#     1. Redistributions of source code must retain the above copyright notice,
 #        this list of conditions and the following disclaimer.
-#     
-#     2. Redistributions in binary form must reproduce the above copyright 
+#
+#     2. Redistributions in binary form must reproduce the above copyright
 #        notice, this list of conditions and the following disclaimer in the
 #        documentation and/or other materials provided with the distribution.
 #
@@ -37,6 +37,7 @@ from django.conf import settings
 from django.core.cache import cache
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+
 
 class Graph(models.Model):
     """
@@ -64,6 +65,7 @@ class Graph(models.Model):
         verbose_name = _('graph')
         verbose_name_plural = _('graphs')
 
+
 class Metric(models.Model):
     """
     A model representing a monitored metric.
@@ -76,13 +78,13 @@ class Metric(models.Model):
         ('str', 'string'),
     )
 
-    name = models.CharField(max_length=32, verbose_name=_('name'))
-    parameter = models.CharField(max_length=256, verbose_name=_('parameter'))
+    name = models.CharField(max_length=32, verbose_name=('name'))
+    parameter = models.CharField(max_length=256, verbose_name=('parameter'))
     type = models.CharField(max_length=16, choices=TYPE_CHOICES, default='float')
-    unit = models.CharField(max_length=6, blank=True, verbose_name=_('unit'))
-    rrd_enabled = models.BooleanField(default=True, verbose_name=_('RRD enabled'))
-    graph_color = models.CharField(blank=True, max_length=8, verbose_name=_('graph color'))
-    graph_order = models.IntegerField(default=0, verbose_name=_('graph order'))
+    unit = models.CharField(max_length=6, blank=True, verbose_name=('unit'))
+    rrd_enabled = models.BooleanField(default=True, verbose_name=('RRD enabled'))
+    graph_color = models.CharField(blank=True, max_length=8, verbose_name=('graph color'))
+    graph_order = models.IntegerField(default=0, verbose_name=('graph order'))
 
     def get_polling(self, obj):
         """
@@ -101,15 +103,15 @@ class Metric(models.Model):
                 dirpath = os.path.dirname(filepath)
                 if not os.path.exists(dirpath):
                     os.makedirs(dirpath)
-                rrdtool.create(filepath , 'DS:%s:GAUGE:300:U:U' % self.id,
-                    'RRA:AVERAGE:0.5:1:600',
-                    'RRA:AVERAGE:0.5:6:600',
-                    'RRA:AVERAGE:0.5:24:600',
-                    'RRA:AVERAGE:0.5:288:600',
-                    'RRA:MAX:0.5:1:600',
-                    'RRA:MAX:0.5:6:600',
-                    'RRA:MAX:0.5:24:600',
-                    'RRA:MAX:0.5:288:600') # Up to 600d
+                rrdtool.create(filepath, 'DS:%s:GAUGE:300:U:U' % self.id,
+                               'RRA:AVERAGE:0.5:1:600',
+                               'RRA:AVERAGE:0.5:6:600',
+                               'RRA:AVERAGE:0.5:24:600',
+                               'RRA:AVERAGE:0.5:288:600',
+                               'RRA:MAX:0.5:1:600',
+                               'RRA:MAX:0.5:6:600',
+                               'RRA:MAX:0.5:24:600',
+                               'RRA:MAX:0.5:288:600')  # Up to 600d
             # As rrdupdate manpage says, "using the letter 'N', in which
             # case the update time is set to be the current time
             rrdtool.update(filepath, str("N:%s" % value))
@@ -160,6 +162,7 @@ class Metric(models.Model):
         verbose_name = _('metric')
         verbose_name_plural = _('metrics')
 
+
 def format_with_prefix(value, unit):
     """
     Formats a float value with the appropriate SI prefix.
@@ -177,6 +180,7 @@ def format_with_prefix(value, unit):
     else:
         l = int(math.floor(l))
     return u'%.1f %s%s' % (value / (base ** l), prefixes[l], unit)
+
 
 def format_value(value, unit):
     """

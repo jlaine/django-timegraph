@@ -100,10 +100,12 @@ class Metric(models.Model):
         if self.rrd_enabled:
             filepath = self._rrd_path(obj)
             if not os.path.exists(filepath):
+                heartbeat = getattr(settings, 'TIMEGRAPH_HEARTBEAT', 300)
                 dirpath = os.path.dirname(filepath)
                 if not os.path.exists(dirpath):
                     os.makedirs(dirpath)
-                rrdtool.create(filepath, 'DS:%s:GAUGE:300:U:U' % self.id,
+
+                rrdtool.create(filepath, 'DS:%s:GAUGE:%s:U:U' % (self.id, heartbeat),
                                'RRA:AVERAGE:0.5:1:600',
                                'RRA:AVERAGE:0.5:6:600',
                                'RRA:AVERAGE:0.5:24:600',

@@ -32,7 +32,6 @@
 import math
 import os
 import rrdtool
-import time
 
 from django.conf import settings
 from django.core.cache import cache
@@ -111,7 +110,9 @@ class Metric(models.Model):
                     'RRA:MAX:0.5:6:600',
                     'RRA:MAX:0.5:24:600',
                     'RRA:MAX:0.5:288:600') # Up to 600d
-            rrdtool.update(filepath, str("%i:%s" % (int(time.time()), value)))
+            # As rrdupdate manpage says, "using the letter 'N', in which
+            # case the update time is set to be the current time
+            rrdtool.update(filepath, str("N:%s" % value))
 
     @property
     def is_summable(self):

@@ -188,6 +188,9 @@ def format_value(value, unit):
     """
     Formats the given value with the specified unit.
     """
+
+    units_raw_format = (u'%', u'°', u'°C', u'°F', u'dBm')
+
     if value in [None, '']:
         return ''
 
@@ -198,15 +201,15 @@ def format_value(value, unit):
             return value
 
     if isinstance(value, float):
-        if unit in [u'%', u'°', u'°C', u'°F']:
+        if unit in units_raw_format:
             return '%.1f %s' % (value, unit)
-        else:
-            return format_with_prefix(value, unit)
+
+        return format_with_prefix(value, unit)
 
     if isinstance(value, int) or isinstance(value, long):
-        if unit in [u'%', u'°', u'°C', u'°F'] or value < 1000:
+        if unit in units_raw_format or value < 1000:
             return '%i %s' % (value, unit)
-        else:
-            return format_with_prefix(value, unit)
+
+        return format_with_prefix(value, unit)
 
     return ''

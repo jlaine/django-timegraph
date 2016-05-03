@@ -130,9 +130,15 @@ class Metric(models.Model):
         Converts the given string value to a python value.
         """
         if self.type == 'float':
-            return value and float(value) or 0.0
+            try:
+                return float(value)
+            except (ValueError, TypeError):
+                return 0.0
         elif self.type == 'int':
-            return value and int(value) or 0
+            try:
+                return int(value)
+            except (ValueError, TypeError):
+                return 0
         elif self.type == 'bool':
             return value in ['1', 'True']
         else:

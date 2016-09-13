@@ -74,24 +74,24 @@ function timegraph_controls(controls, images) {
     var start_field = controls.find('.timegraph-start').datetimepicker();
     var start_picker = start_field.data('datetimepicker');
     start_field.on('changeDate', function(e) {
-        update_image(images, {start: date_to_offset(start_picker.getDate())});
+        update_image(images, {start: date_to_offset(start_picker.getLocalDate())});
     });
-    start_picker.setDate(offset_to_date(start));
+    start_picker.setLocalDate(offset_to_date(start));
 
     var end_field = controls.find('.timegraph-end').datetimepicker();
     var end_picker = end_field.data('datetimepicker');
     end_field.on('changeDate', function(e) {
-        update_image(images, {end: date_to_offset(end_picker.getDate())});
+        update_image(images, {end: date_to_offset(end_picker.getLocalDate())});
     });
-    end_picker.setDate(offset_to_date(end));
+    end_picker.setLocalDate(offset_to_date(end));
 
     var timespan = controls.find('select.timegraph-preset');
     timespan.change(function() {
         var i = parseInt(timespan.val());
         if (i >= 0 && i < timespans.length) {
             // update start / end
-            start_picker.setDate(offset_to_date(timespans[i].start));
-            end_picker.setDate(offset_to_date(timespans[i].end));
+            start_picker.setLocalDate(offset_to_date(timespans[i].start));
+            end_picker.setLocalDate(offset_to_date(timespans[i].end));
 
             // update images
             update_image(images, {

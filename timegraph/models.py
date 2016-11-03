@@ -288,10 +288,9 @@ class Metric(models.Model):
         """
         RRD path for the given object.
         """
-        rrd_root = getattr(settings, 'TIMEGRAPH_RRD_ROOT', '/var/lib/rrdcached/db')
         obj_type = objtype(obj)
         obj_pk = str(obj.pk).replace(':', '')
-        return os.path.join(rrd_root, obj_type, obj_pk, '%s.rrd' % self.pk)
+        return os.path.join(self.rrd_root, obj_type, obj_pk, '%s.rrd' % self.pk)
 
     def _pre_key_for(self, *objects):
         """Returns the pre-key for the given object(s).

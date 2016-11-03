@@ -102,6 +102,7 @@ class Metric(models.Model):
         self.rrd_root = getattr(settings, 'TIMEGRAPH_RRD_ROOT', '/var/lib/rrdcached/db')
         self.cache_prefix = getattr(settings, 'TIMEGRAPH_CACHE_PREFIX', 'timegraph')
         self.heartbeat = getattr(settings, 'TIMEGRAPH_HEARTBEAT', 300)
+        self.queue_size = getattr(settings, 'MEMCACHE_QUEUE_SIZE', 3000)
 
     def get_cached_polling(self, obj):
         """Returns the cached value of the metric for the given object.
@@ -254,7 +255,7 @@ class Metric(models.Model):
         main()
         """
         self.queue.append((obj, value))
-        if len(self.queue) > 3000:
+        if len(self.queue) > self.queue_size:
             self.dump_queue()
 
     @property

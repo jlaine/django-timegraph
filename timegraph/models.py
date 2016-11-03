@@ -339,7 +339,7 @@ def format_value(value, unit):
     if value in [None, '']:
         return ''
 
-    if isinstance(value, bool) or isinstance(value, str) or isinstance(value, unicode):
+    if isinstance(value, (bool, str, unicode)):
         if unit:
             return '%s %s' % (value, unit)
         else:
@@ -351,7 +351,7 @@ def format_value(value, unit):
 
         return format_with_prefix(value, unit)
 
-    if isinstance(value, int) or isinstance(value, long):
+    if isinstance(value, (int, long)):
         if unit in units_raw_format or value < 1000:
             return '%i %s' % (value, unit)
 

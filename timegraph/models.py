@@ -182,7 +182,7 @@ class Metric(models.Model):
                     # we could use os.path.exists here, but python calls stat()
                     # to check and that is too slow for our use case.
                     # Use an exception for such rare cases
-                    rrdtool.update(filepath, "N:%s" % value)
+                    rrdtool.update(filepath, "N:{}".format(value))
                 except rrdtool.error as err:
                     if "No such file or directory" not in err.message:
                         LOGGER.error("error on %s metric: %s", self.parameter,
@@ -204,7 +204,7 @@ class Metric(models.Model):
                                    'RRA:MAX:0.5:288:600')  # Up to 600d
                     # As rrdupdate manpage says, "using the letter 'N', in which
                     # case the update time is set to be the current time
-                    rrdtool.update(filepath, "N:%s" % value)
+                    rrdtool.update(filepath, "N:{}".format(value))
         cache.set_many(cache_dict, 7 * 86400)
 
     def dump_queue(self):

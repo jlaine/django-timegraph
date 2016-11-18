@@ -249,10 +249,10 @@ class TestMetric(TestCase):
         self.assertEquals(m.to_python('1'), '1')
         self.assertEquals(m.to_python('abcd'), 'abcd')
 
-    def test_cache_key(self):
+    def test_pre_key(self):
         metric = Metric.objects.get(pk=1)
         user = User.objects.get(pk=1)
-        self.assertEquals(metric._cache_key(user), '%s/user/1/1' % settings.TIMEGRAPH_CACHE_PREFIX)
+        self.assertEquals(metric._pre_key_for(user) % user.pk, '%s/user/1/1' % settings.TIMEGRAPH_CACHE_PREFIX)
 
     def test_rrd_path(self):
         metric = Metric.objects.get(pk=1)
